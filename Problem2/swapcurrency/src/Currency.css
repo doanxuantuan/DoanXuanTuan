@@ -1,0 +1,39 @@
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: gray;
+}
+.container{
+    box-sizing: border-box;
+    background-color: white;
+    margin-top: 0px;
+    display: flex;
+    width: 600px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 30px;
+}
+.from{
+    font-size: 17px;
+    font-weight: 800;
+}
+.to{
+    font-size: 17px;
+    font-weight: 800; 
+}
+input::after {
+    content: "Please enter a valid email address";
+    position: absolute;
+    bottom: -8px; /* Adjust position as needed */
+  }
+.text-center{
+    font-size: 40px;
+    font-weight: 600;
+  }
+.card-body h1{
+    font-weight: 500;
+  }

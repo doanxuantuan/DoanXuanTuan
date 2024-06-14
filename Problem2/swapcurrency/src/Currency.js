@@ -1,5 +1,6 @@
 import React,{useState,useEffect} from 'react'
 import axios from'axios'
+import './Currency.css'
 import Currencyoptions from './Currencyoptions'
 const Currency = () => {
   const [currencyoptions,setCurrencyoptions] = useState([])
@@ -8,7 +9,10 @@ const Currency = () => {
   const [fromamount,setFromamount]=useState(0)
   const [toamount,setToamount]=useState(0)
   const [currencyname,setCurrencyname]=useState({})
-  useEffect(()=>{
+  const [inputValue, setInputValue] = useState('');
+  const [error, setError] = useState('');
+
+    useEffect(()=>{
       axios.get('https://api.frankfurter.app/currencies')
       .then((response)=>{
         let data=response.data
@@ -31,8 +35,23 @@ const Currency = () => {
         .then(data=>setToamount(Object.values(data.rates)[0]))
     }
 },[fromcurrency,tocurrency,fromamount,toamount])
+
+
+
+
+    const handleChange = (event) => {
+        const value = event.target.value;
+        // Kiểm tra nếu giá trị không phải là số
+        if (isNaN(value)) {
+        setError('Please enter the amount.');
+        } else {
+        setInputValue(value);
+        setError('');
+        }
+    };
+
   return (
-    <div className='container mt-5' style={{display:'flex',justifyContent:'center'}}>
+    <div className='container mt-5'>
     <div className='row'>
      <div className='col'>
          <div className='card'>
@@ -43,14 +62,17 @@ const Currency = () => {
              <div>
                  <h1>From Currency:</h1>
                  <Currencyoptions currencyoptions={currencyoptions} updatehandler={(e)=>setFromcurrency(e.target.value)}/> <br/>
-                 <p>Enter Amount in:{currencyname[`${fromcurrency}`]}</p>
-                 <input type='number' value={fromamount} onChange={(e)=>setFromamount(e.target.value)}/>
+                 <p>Enter Amount in: <span className='from'>{currencyname[`${fromcurrency}`]}</span> </p>
+                 <input type='text'value={fromamount} onChange={(e)=>{setFromamount(e.target.value);handleChange(e)}}/>
+                {/* //  value={inputValue} onChange={handleChange}required */}
+                 {error && <div style={{ color: 'red' }}>{error}</div>}
+
              </div>
              <div>
-                 <h1>To Currency:</h1>
+                 <h1>To Currency: </h1>
                  <Currencyoptions currencyoptions={currencyoptions} updatehandler={(e)=>setTocurrency(e.target.value)}/><br/>
-                 <p>Enter Amount in :  {currencyname[`${tocurrency}`]}</p>
-                 <input type='number' value={toamount} onChange={(e)=>setToamount(e.target.value)}/>
+                 <p>Enter Amount in : <span className='to'>{currencyname[`${tocurrency}`]}</span> </p>
+                 <input type='number' value={toamount} onChange={(e)=>setToamount(e.target.value)}  />
              </div>
             </div>
          </div>
